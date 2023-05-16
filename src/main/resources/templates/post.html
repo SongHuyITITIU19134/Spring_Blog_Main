@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog:: POST</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+    :root{
+      --Playfair: 'Playfair Display', serif;
+      --Quicksand: 'Quicksand', sans-serif;
+      --Roboto: 'Roboto', sans-serif;
+      --dark: #3c393d;
+      --exDark: #2b2b2b;
+    }
+    *{
+      padding: 0;
+      margin: 0;
+      font-family: var(--Quicksand);
+    }
+    body{
+      line-height: 1.4;
+      color: var(--dark);
+    }
+
+
+    .container{
+      max-width: 1320px;
+      padding: 0 1.2rem;
+    }
+
+    /* header */
+
+    .navbar{
+      display: flex;
+      background: linear-gradient(to right, #9DC08B, #F3DEBA);
+      padding: 0.8rem;
+
+    }
+    .navbar-brand{
+      color: #fff;
+      font-size: 2rem;
+      display: block;
+      text-decoration: none;
+      font-family: var(--Playfair);
+      letter-spacing: 1px;
+    }
+    .navbar-nav{
+      font-size: x-large;
+      width: 70%;
+      text-align:right;
+      margin-block-start: auto;
+
+
+    }
+    .navbar-nav a{
+      text-transform: uppercase;
+      font-family: var(--Roboto);
+      letter-spacing: 1px;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 3px;
+      transition: opacity 0.5s ease;
+    }
+    .navbar-nav a:hover{
+      opacity: 0.7;
+    }
+    .Contain{
+      display: flex;
+    }
+
+
+    .Content{
+      border-radius: 10px;
+      text-align: center;
+      background-color: #EEE3CB;
+      width: 60%;
+      margin: 10px 15px 2px 10px;
+    }
+    .Content p{
+      letter-spacing: 1px;
+      font-size: 22px;
+      color: #454545;
+    }
+    .Profile{
+      width: 20%;
+    }
+    .post{
+      width: 20%;
+    }
+    .text{
+      margin-top: 10px;
+    }
+    h1{
+      color: #8a5f02;
+
+    }
+    .comment{
+      margin-top: 10px;
+      border-radius: 2%;
+    }
+
+
+    .p1{
+
+      border: 2px solid black;
+      border-radius: 5%;
+    }
+    h3{
+      margin-bottom: 10px;
+    }
+
+    a{
+      text-decoration: none;
+      color: #9E6F21;
+    }
+
+    .btn2 {
+      padding: 5px 15px;
+      margin-left: 15px;
+      border: unset;
+      border-radius: 15px;
+      z-index: 1;
+      background: #D4FAFC;
+      position: relative;
+      font-weight: 1000;
+      font-size: 17px;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      transition: all 250ms;
+      overflow: hidden;
+    }
+
+    .btn2::before {
+
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      border-radius: 15px;
+      background-color: #f80000;
+      z-index: -1;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      transition: all 250ms
+    }
+
+    .btn2 a:hover {
+      color: #fff;
+    }
+
+    .btn2:hover::before {
+      width: 100%;
+    }
+
+    .btn1 {
+
+      padding: 5px 15px;
+      margin-left: 15px;
+      border: unset;
+      border-radius: 15px;
+      z-index: 1;
+      background: #D4FAFC;
+      position: relative;
+      font-weight: 1000;
+      font-size: 17px;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      transition: all 250ms;
+      overflow: hidden;
+    }
+    .btn1-1 {
+      padding: 5px 15px;
+      margin-left: 15px;
+      border: unset;
+      border-radius: 15px;
+      z-index: 1;
+      background: #B0DAFF;
+      position: relative;
+      font-weight: 1000;
+      font-size: 17px;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      transition: all 250ms;
+      overflow: hidden;
+    }
+
+    .btn1::before {
+
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      border-radius: 15px;
+      background-color: #47b900;
+      z-index: -1;
+      -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+      transition: all 250ms
+    }
+
+    .btn1 a:hover {
+      color: #ffffff;
+    }
+
+    .btn1:hover::before {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .button-56 {
+        padding: 0 40px;
+      }
+    }
+
+
+    /* Media Queries */
+    @media screen and (min-width: 540px){
+      .navbar-nav a{
+        padding-right: 1.2rem;
+        padding-left: 1.2rem;
+      }
+    }
+    .comment-box{
+      margin: auto;
+      margin-top: 30px;
+      margin-bottom: 10px;
+
+      width: 40%;
+      padding: 10px;
+      border-radius: 10px;
+
+    }
+
+    @media screen and (min-width: 768px){
+      .navbar-nav a{
+        padding-right: 1.2rem;
+        padding-left: 1.2rem;
+      }
+    }
+    .box-cmt{
+      margin-top: 30px;
+      margin-bottom: 10px;
+      background: #B7C4CF;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 3px 3px 25px rgba(0,0,0,0.3);
+    }
+    .box-cmt a{
+      color: var(--dark);
+      text-decoration: none;
+      text-transform: capitalize;
+      font-family: var(--Playfair);
+    }
+    .cmt-btn{
+      margin-top: 20px;
+    }
+    .cmt-btn a{
+      font-family:var(--Quicksand);
+    }
+
+    @media screen and (min-width: 992px){
+      .blog-content{
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .about-content{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3rem;
+        align-items: center;
+      }
+    }
+
+    @media screen and (min-width: 1200px){
+      .design-content{
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class = "navbar">
+  <div class = "container">
+    <a th:href="@{'/'}" class = "navbar-brand">Travel Coder</a>
+  </div>
+  <div class = "navbar-nav">
+    <a href = "#">My profile</a>
+  </div>
+</nav>
+<div class="Contain">
+  <div class="Profile" >
+    <h1 th:text="'Written by '+ ${post.account.firstname}">Account First Name</h1>
+    <p style="font-size: large;" th:text="'Email: '+ ${post.account.email}">Account</p>
+
+
+  </div>
+  <div class="Content">
+    <h1 th:text="${post.title}">Title</h1>
+
+    <p th:text="${post.body}">Body Text</p>
+    <hr>
+    <br>
+
+    <div class = "design-content"  >
+      <!-- item -->
+      <div class="design-item"  sec:authorize="isAuthenticated()"  th:each="comment: ${comments}">
+        <div class="box-cmt">
+          <p>Comment: <span th:text="${comment.content}"></span></p>
+          <div class="cmt-btn" >
+            <button class="btn1-1"><a th:href="@{'/cmt/' + ${comment.id} + '/editCmt'}">Edit Comment</a></button>
+            <button class="btn1-1" sec:authorize="isAuthenticated()" ><a th:href="@{'/cmt/' + ${comment.id} + '/delete/'}">Delete Comment</a></button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div  class="comment-box" sec:authorize="isAuthenticated()" >
+      <button class="btn1"><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></button>
+      <button class="btn1"><a th:href="@{'/cmt/' + ${post.id} + '/new'}"> Comment</a></button>
+      <button class="btn2" sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></button>
+    </div>
+
+  </div>
+  <div class="post" >
+    <h1> Information post </h1>
+    <div class= "design-title" >
+      <h3><a th:href="@{'/posts/' +${post.id}}"
+             th:text="${post.title}">Title</a>
+      </h3>
+      <p th:text=" 'Pulished on' + ${post.createdAt}">Created At</p>
+      <p th:text=" 'Update on' + ${post.updateAt}">Update At</p>
+      <br>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

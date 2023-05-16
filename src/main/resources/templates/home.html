@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        :root{
+            --Playfair: 'Playfair Display', serif;
+            --Quicksand: 'Quicksand', sans-serif;
+            --Roboto: 'Roboto', sans-serif;
+            --dark: #3c393d;
+            --exDark: #2b2b2b;
+        }
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: var(--Quicksand);
+        }
+        body{
+            line-height: 1.4;
+            color: var(--dark);
+        }
+        img{
+            width: 100%;
+            display: block;
+        }
+        .container{
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 1.2rem;
+        }
+
+        /* header */
+        header{
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+        }
+        .navbar{
+            background: linear-gradient(to right, #9DC08B, #F3DEBA);
+            padding: 1.2rem;
+        }
+        .navbar-brand{
+            color: #395144;
+            font-size: 2rem;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            font-family: var(--Playfair);
+            letter-spacing: 1px;
+        }
+        .navbar-nav{
+            margin-block-end: auto;
+            padding: 0.8rem 0 0.2rem 0;
+            color:#395144;
+            text-align: center;
+        }
+        .navbar-nav a{
+            text-transform: uppercase;
+            font-family: var(--Roboto);
+            letter-spacing: 1px;
+            font-weight: 500;
+            color: #395144;
+            text-decoration: none;
+            display: inline-block;
+            padding: 0.4rem 0.1rem;
+            letter-spacing: 3px;
+            transition: opacity 0.5s ease;
+        }
+        .navbar-nav a:hover{
+            opacity: 0.7;
+        }
+        .banner{
+            background-color: #99A98F;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+        .banner-title{
+            font-size: 2rem;
+            font-family: var(--Playfair);
+            line-height: 1.2;
+        }
+        .banner-title span{
+            font-family: var(--Playfair);
+            color: var(--exDark);
+        }
+        .banner p{
+            padding: 1rem 0 2rem 0;
+            font-size: 1.2rem;
+            text-transform: capitalize;
+            font-family: var(--Roboto);
+            font-weight: 300;
+            word-spacing: 2px;
+        }
+        .banner form{
+            background: #fff;
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .search-input{
+            font-family: var(--Roboto);
+            font-size: 1.1rem;
+            width: 100%;
+            outline: 0;
+            padding: 0.6rem 0;
+            border: none;
+        }
+        .search-input::placeholder{
+            text-transform: capitalize;
+        }
+        .search-btn{
+            width: 40px;
+            font-size: 1.1rem;
+            color: var(--dark);
+            border: none;
+            background: transparent;
+            outline: 0;
+            cursor: pointer;
+        }
+
+        /* design */
+        .design{
+            background-color: #D6E8DB;
+            padding: 4.5rem 0;
+        }
+        .title{
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .title h2{
+            font-family: var(--Playfair);
+            font-size: 2.4rem;
+        }
+        .title p{
+            text-transform: uppercase;
+            padding: 0.6rem 0;
+        }
+        .design-content{
+            margin: 2rem 0;
+        }
+        .design-item{
+            cursor: pointer;
+            margin: 1.5rem 0;
+        }
+        .design-img{
+            position: relative;
+            overflow: hidden;
+        }
+        .design-img::after{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .design-img img{
+            transition:  all 0.5s ease;
+        }
+        .design-item:hover img{
+            transform: scale(1.2);
+        }
+        .design-img span:first-of-type{
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            left: 10px;
+            background: var(--exDark);
+            color: #fff;
+            padding: 0.25rem 1rem;
+        }
+        .design-img span:last-of-type{
+            position: absolute;
+            z-index: 1;
+            bottom: 10px;
+            right: 10px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .design-title{
+
+            padding: 1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            width: 70%;
+            margin: 0 auto;
+        }
+        .design-title a{
+            color: var(--dark);
+            text-decoration: none;
+            text-transform: capitalize;
+            font-family: var(--Playfair);
+        }
+
+        /* blog */
+        .blog{
+            background: #f9f9f9;
+            padding: 4.5rem 0;
+        }
+        .blog-content{
+            margin: 2rem 0;
+        }
+        .blog-img{
+            position: relative;
+        }
+        .blog-img span{
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--exDark);
+            color: #fff;
+            font-size: 1.4rem;
+            padding: 0.3rem 0.6rem;
+        }
+        .blog-text{
+            margin: 2.2rem 0;
+            padding: 0 1rem;
+        }
+        .blog-text span{
+            font-weight: 300;
+            display: block;
+            padding-bottom: 0.5rem;
+        }
+        .blog-text h2{
+            font-family: var(--Playfair);
+            padding: 1rem 0;
+            font-size: 1.65rem;
+            font-weight: 500;
+        }
+        .blog-text p{
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            padding-bottom: 1.2rem;
+        }
+        .blog-text a{
+            font-family: var(--Roboto);
+            font-size: 1.1rem;
+            text-decoration: none;
+            color: var(--dark);
+            display: inline-block;
+            background: var(--dark);
+            color: #fff;
+            padding: 0.55rem 1.2rem;
+            transition: all 0.5s ease;
+        }
+        .blog-text a:hover{
+            background: var(--exDark);
+        }
+
+        /* about */
+        .about{
+            padding: 4.5rem 0;
+        }
+        .about-text{
+            margin: 2rem 0;
+        }
+        .about-text > p{
+            font-size: 1.1rem;
+            padding: 0.6rem 0;
+            opacity: 0.8;
+        }
+
+        /* footer */
+        footer{
+            background: var(--exDark);
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .social-links{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.4rem;
+        }
+        .social-links a{
+            border: 2px solid #fff;
+            color: #fff;
+            display: block;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            text-decoration: none;
+            margin: 0 0.3rem;
+            transition: all 0.5s ease;
+        }
+
+        .social-links a:hover{
+            background: #fff;
+            color: var(--exDark);
+        }
+        .footer span{
+            margin-top: 1rem;
+            display: block;
+            font-family: var(--Playfair);
+            letter-spacing: 2px;
+        }
+
+        .button {
+            padding: 8px 13px;
+            border: unset;
+            border-radius: 15px;
+            color: #fff;
+            z-index: 1;
+            background: #454545;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 15px;
+            background-color: #fe6161;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms
+        }
+
+        .button:hover {
+            color: #e8e8e8;
+        }
+
+        .button:hover::before {
+            width: 100%;
+        }
+
+
+        .btn1 {
+            padding: 5px 15px;
+            margin-left: 15px;
+            border: unset;
+            border-radius: 15px;
+            z-index: 1;
+            background: #454545;
+            position: relative;
+            font-weight: 1000;
+            font-size: 17px;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms;
+            overflow: hidden;
+        }
+
+        .btn1::before {
+
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border-radius: 15px;
+            background-color: #FFA559;
+            z-index: -1;
+            -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+            transition: all 250ms
+        }
+
+        .btn1:hover {
+            color: #3C6255;
+        }
+
+        .btn1:hover::before {
+            width: 100%;
+        }
+
+
+        /* Media Queries */
+        @media screen and (min-width: 540px){
+            .navbar-nav a{
+                padding-right: 1.2rem;
+                padding-left: 1.2rem;
+            }
+            .banner-title{
+                font-size: 5rem;
+            }
+            .banner form{
+                margin-top: 1.4rem;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media screen and (min-width: 768px){
+            .navbar .container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .search-input{
+                padding: 0.8rem 0;
+            }
+            .design-content{
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            .design-item{
+                margin: 0;
+            }
+            .blog-content{
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        .group {
+            display: flex;
+            margin-top: 46px;
+            line-height: 30px;
+            align-items: center;
+            position: relative;
+            max-width: 1000px;
+        }
+
+        .input {
+            width: 200%;
+            height: 50px;
+            line-height: 48px;
+            padding: 0 1rem;
+            padding-left: 2.5rem;
+            border: 4px solid transparent;
+            border-radius: 10px;
+            outline: none;
+            background-color: #f3f3f4;
+            color: #0d0c22;
+            transition: .3s ease;
+        }
+
+        .input::placeholder {
+            color: #9e9ea7;
+        }
+
+        .input:focus, input:hover {
+            outline: none;
+            border-color: rgba(22, 146, 247, 0.4);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+        }
+
+        .icon {
+            position: absolute;
+            left: 1rem;
+            fill: #b4b4ea;
+            width: 1rem;
+            height: 1rem;
+        }
+        .text-h1{
+            margin-top: 20px;
+        }
+
+
+        @media screen and (min-width: 992px){
+            .blog-content{
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .about-content{
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 3rem;
+                align-items: center;
+            }
+        }
+
+
+        @media screen and (min-width: 1200px){
+            .design-content{
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<header>
+    <nav class = "navbar">
+        <div class = "container">
+            <a th:href="@{'/'}" class = "navbar-brand">Travel Coder</a>
+            <div class= "navbar-nav">
+                <a href = "#about">about</a>
+                <a href = "#blog">blog </a>
+            </div>
+            <div class= "navbar-nav" sec:authorize="!isAuthenticated()" >
+                <a class="btn1" th:href="@{/register}">Join now !! </a>
+
+            </div>
+            <div class="navbar-nav" sec:authorize="isAuthenticated()">
+                <form action="#"
+                      th:action="@{/logout}"
+                      method="POST">
+
+                    <a th:href="@{/posts/new}">New Post</a>
+                    <button class="button" type="submit">Log Out</button>
+                </form>
+                <h2><a th:object="account" th:href="@{'/person/' +${account.email}} "
+                       th:text="${account.email}">Title</a>
+                </h2>
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class = "banner">
+        <div class = "container" >
+            <h1 class = "banner-title" >
+                <span>Travel</span> Blog
+            </h1>
+            <label sec:authorize="isAuthenticated()"> <h1 class="text-h1"><strong>Hello,</strong><span style="color: #2b2b2b" sec:authentication="name">UserName</span></h1></label>
+            <div class="group">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
+                <input placeholder="Search" type="search" class="input">
+            </div>
+        </div>
+    </div>
+</header>
+<section class = "design" id = "blog">
+    <div class = "container">
+        <div class = "title">
+            <h2> Scenic Spots & Blogs </h2>
+            <p>A guy who love traveling and coding</p>
+        </div>
+        <div class = "design-content"  >
+            <!-- item -->
+            <div class= "design-item" th:each="post : ${posts}">
+                <div class= "design-title" >
+                    <h2><a th:href="@{'/posts/' +${post.id}} "
+                           th:text="${post.title}">Title</a>
+                    </h2>
+                    <p th:text=" 'Pulished on' + ${post.createdAt}">Created At</p>
+                    <p th:text=" 'Update on' + ${post.updateAt}">Update At</p>
+                    <br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section class = "about" id = "about">
+    <div class = "container">
+        <div class = "about-content">
+            <div>
+                <img src = "images/about-bg.jpg" alt = "">
+            </div>
+            <div class = "about-text">
+                <div class = "title">
+                    <h2>Nguyen Song Huy</h2>
+                    <p>/Travel_Coder/</p>
+                </div>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id totam voluptatem saepe eius ipsum nam provident sapiente, natus et vel eligendi laboriosam odit eos temporibus impedit veritatis ut, illo deserunt illum voluptate quis beatae quod. Necessitatibus provident dicta consectetur labore!</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam corrupti natus, eos quia recusandae voluptatem veniam modi officiis minima provident rem sint porro fuga quos tempora ea suscipit vero velit sed laudantium eaque necessitatibus maxime!</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of about -->
+
+<!-- footer -->
+<footer>
+    <div class = "social-links">
+        <a href = "#"><i class = "fab fa-facebook-f"></i></a>
+        <a href = "#"><i class = "fab fa-twitter"></i></a>
+        <a href = "#"><i class = "fab fa-instagram"></i></a>
+        <a href = "#"><i class = "fab fa-pinterest"></i></a>
+    </div>
+    <span>Travel.Coder Blog Page</span>
+</footer>
+<!-- end of footer -->
+</body>
+</html>

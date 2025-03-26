@@ -1,2 +1,2 @@
-# Spring_Blog_Main
+# Blog Website 
 Using MVC Spring, Using SpringBoot and Spring Security
